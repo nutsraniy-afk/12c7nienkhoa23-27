@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đường Đua 20/10 - Ai Hiểu Cô Giáo Chủ Nhiệm Nhất Lớp? 💕</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Quicksand & Mali cho phong cách bo tròn dễ thương -->
+    <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,500;0,600;0,700;1,500&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Quicksand', 'sans-serif'],
+                        cute: ['Mali', 'cursive'],
+                    },
+                    colors: {
+                        pastel: {
+                            bg: '#FFF0F5',
+                            card: '#FFFFFF',
+                            pink: '#FFB6C1',
+                            hotpink: '#FF69B4',
+                            deep: '#DB2777',
+                            rose: '#FFE4E6',
+                            cream: '#FFFDF9'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 3.5s ease-in-out infinite',
+                        'wiggle': 'wiggle 2.2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-7px)' },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-4deg)' },
+                            '50%': { transform: 'rotate(4deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: radial-gradient(circle at top left, #ffe4e6, #fff0f5, #fce7f3);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #831843;
+        }
+
+        /* Nút bấm nổi 3D dễ thương */
+        .btn-cute {
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 5px 0 #e11d48, 0 8px 15px rgba(244, 114, 182, 0.25);
+        }
+        .btn-cute:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0 #e11d48, 0 12px 20px rgba(244, 114, 182, 0.35);
+        }
+        .btn-cute:active:not(:disabled) {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #e11d48, 0 4px 8px rgba(244, 114, 182, 0.2);
+        }
+
+        /* Nút đáp án */
+        .option-btn {
+            transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 0 #fbcfe8;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.005);
+            box-shadow: 0 6px 0 #f472b6;
+            background-color: #fdf2f8;
+            border-color: #f472b6;
+        }
+
+        /* Khung viền thẻ bài */
+        .cute-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 3px solid #fbcfe8;
+            box-shadow: 0 18px 36px -12px rgba(236, 72, 153, 0.16), 0 0 0 5px rgba(255, 255, 255, 0.65);
+        }
+
+        /* Cánh hoa / trái tim bay */
+        .falling-item {
+            position: fixed;
+            top: -10%;
+            z-index: 0;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(0vh) translateX(0px) rotate(0deg);
+                opacity: 0.9;
+            }
+            50% {
+                transform: translateY(55vh) translateX(25px) rotate(180deg);
+                opacity: 0.85;
+            }
+            100% {
+                transform: translateY(115vh) translateX(-25px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Rung khi trả lời sai */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        .shake-anim {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Thanh cuộn dễ thương */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fff0f5;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f9a8d4;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f472b6;
+        }
+
+        /* Định dạng chuyên biệt khi bấm In / Lưu PDF Sổ Lưu Bút Tặng Cô */
+        @media print {
+            body {
+                background: #fff0f5 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                padding: 0 !important;
+            }
+            header,
+            footer,
+            #petals-container,
+            #tab-content-play,
+            .no-print {
+                display: none !important;
+            }
+            #tab-content-leaderboard {
+                display: block !important;
+            }
+            #wishes-wall-grid,
+            #leaderboard-list-body {
+                max-height: none !important;
+                overflow: visible !important;
+            }
+            .cute-card {
+                box-shadow: none !important;
+                border: 2px solid #fbcfe8 !important;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col justify-between p-3 sm:p-5 select-none">
+
+    <!-- Container chứa hoa và tim bay -->
+    <div id="petals-container" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+    <!-- HEADER & THANH CHUYỂN TAB (CÓ ĐẦY ĐỦ TAB CÁN BỘ LỚP SỬA ĐỀ TRÊN WEB) -->
+    <header class="relative z-10 max-w-6xl w-full mx-auto bg-white/85 backdrop-blur-md px-4 py-3 rounded-[1.75rem] border-2 border-pink-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3">
+        <!-- Logo & Trạng thái Cloud -->
+        <div class="flex items-center justify-between w-full md:w-auto gap-3">
+            <div class="flex items-center gap-2.5">
+                <span class="text-3xl animate-wiggle inline-block">🌸</span>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-cute font-bold text-lg sm:text-xl text-pink-600 leading-tight">Đường Đua 20/10</h1>
+                        <span id="cloud-status-badge" class="inline-flex items-center gap-1 text-[11px] font-bold bg-amber-100 text-amber-700 px-2.5 py-0.5 rounded-full border border-amber-200">
+                            <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                            <span>Đang kết nối...</span>
+                        </span>
+                    </div>
+                    <p class="text-xs text-pink-400 font-semibold">Thử thách hiểu ý Cô giáo chủ nhiệm • Đồng bộ cả lớp</p>
+                </div>
+            </div>
+
+            <!-- Nút bật/tắt âm thanh trên di động -->
+            <button onclick="toggleSound()" class="md:hidden bg-pink-100 hover:bg-pink-200 text-pink-600 w-9 h-9 rounded-2xl flex items-center justify-center transition shadow-sm" title="Bật/Tắt âm thanh">
+                <i class="sound-icon fa-solid fa-volume-high"></i>
+            </button>
+        </div>
+
+        <!-- 3 Tab Chuyển Đổi: Chơi Quiz, BXH Lưu Bút & Cán Bộ Lớp (Sửa Đề) -->
+        <nav class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 bg-pink-50/90 p-1.5 rounded-2xl border border-pink-200 w-full md:w-auto">
+            <button id="tab-btn-play" onclick="switchTab('play')" class="flex-1 md:flex-initial px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-1.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-sm">
+                <i class="fa-solid fa-gamepad"></i>
+                <span>Chơi Quiz</span>
+            </button>
+            <button id="tab-btn-leaderboard" onclick="switchTab('leaderboard')" class="flex-1 md:flex-initial px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-1.5 text-pink-700 hover:bg-pink-100">
+                <i class="fa-solid fa-trophy text-amber-500"></i>
+                <span>BXH & Lời Chúc</span>
+                <span id="nav-submission-count" class="bg-pink-200 text-pink-800 text-[11px] px-1.5 py-0.2 rounded-full">0</span>
+            </button>
+            <button id="tab-btn-admin" onclick="switchTab('admin')" class="flex-1 md:flex-initial px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-1.5 text-pink-700 hover:bg-pink-100">
+                <i class="fa-solid fa-sliders text-pink-500"></i>
+                <span>Cán Bộ Lớp (Sửa Đề)</span>
+            </button>
+            <button onclick="toggleSound()" class="hidden md:flex bg-white hover:bg-pink-100 text-pink-600 w-9 h-9 rounded-xl items-center justify-center transition border border-pink-200" title="Bật/Tắt âm thanh">
+                <i class="sound-icon fa-solid fa-volume-high"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- NỘI DUNG CHÍNH: CHIA CỘT TRÁI (THÔNG TIN CÔ) & CỘT PHẢI (CÁC TAB) -->
+    <main class="relative z-10 max-w-6xl w-full mx-auto my-5 flex-grow">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+            <!-- CỘT TRÁI (4 CỘT): KHUNG ẢNH CÔ GIÁO CHỦ NHIỆM -->
+            <aside class="lg:col-span-4 cute-card rounded-[2rem] p-5 sm:p-6 flex flex-col items-center text-center relative overflow-hidden">
+                <!-- Trang trí góc thẻ -->
+                <div class="absolute -top-6 -left-6 w-20 h-20 bg-pink-100 rounded-full opacity-60"></div>
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-rose-100 rounded-full opacity-60"></div>
+
+                <!-- Huy hiệu ngày 20/10 -->
+                <div class="inline-flex items-center gap-1.5 bg-pink-100 text-pink-600 px-3.5 py-1 rounded-full text-xs font-bold mb-5 border border-pink-200 shadow-inner">
+                    <span>👑</span>
+                    <span>Cô Giáo Chủ Nhiệm Yêu Quý</span>
+                    <span>👑</span>
+                </div>
+
+                <!-- Khung ảnh tròn có viền hoa và nơ -->
+                <div class="relative group my-1 animate-float">
+                    <!-- Vòng sáng pastel phía sau -->
+                    <div class="absolute -inset-2 bg-gradient-to-tr from-pink-300 via-rose-200 to-amber-200 rounded-full blur opacity-75"></div>
+                    
+                    <!-- Khung viền chính -->
+                    <div class="relative w-44 h-44 sm:w-48 sm:h-48 rounded-full p-2 bg-white border-4 border-dashed border-pink-300 shadow-lg flex items-center justify-center">
+                        <img id="teacher-avatar" 
+                             src="https://placehold.co/400x400/FFE4E6/DB2777?text=Cô+Giáo+20/10+💕" 
+                             onerror="this.src='https://placehold.co/400x400/FFE4E6/DB2777?text=Cô+Giáo+Yêu+🌸'"
+                             alt="Ảnh Cô Giáo" 
+                             class="w-full h-full object-cover rounded-full border-2 border-pink-200" />
+                    </div>
+
+                    <!-- Nơ SVG dễ thương trên đỉnh khung ảnh -->
+                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 z-20 pointer-events-none drop-shadow">
+                        <svg width="64" height="42" viewBox="0 0 64 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M32 21C22 6 6 4 4 16C2 28 18 32 32 21Z" fill="#FF69B4" stroke="#FFFFFF" stroke-width="2.5"/>
+                            <path d="M32 21C42 6 58 4 60 16C62 28 46 32 32 21Z" fill="#FF69B4" stroke="#FFFFFF" stroke-width="2.5"/>
+                            <path d="M26 24L18 39L26 36L29 41L32 25" fill="#F43F5E"/>
+                            <path d="M38 24L46 39L38 36L35 41L32 25" fill="#F43F5E"/>
+                            <circle cx="32" cy="21" r="6" fill="#FFE4E6" stroke="#FF69B4" stroke-width="2.5"/>
+                        </svg>
+                    </div>
+
+                    <!-- Hoa trang trí xung quanh khung -->
+                    <span class="absolute top-3 -left-2 text-2xl animate-wiggle">🌸</span>
+                    <span class="absolute top-4 -right-2 text-xl animate-wiggle" style="animation-delay: 0.5s">🌷</span>
+                    <span class="absolute bottom-2 -left-2 text-xl animate-bounce" style="animation-duration: 2.5s">💖</span>
+                    <span class="absolute bottom-1 -right-2 text-2xl animate-wiggle" style="animation-delay: 1s">🌺</span>
+                </div>
+
+                <!-- Nút tải ảnh Cô giáo trực tiếp trên giao diện -->
+                <div class="no-print mt-3 flex flex-wrap items-center justify-center gap-2">
+                    <label for="upload-avatar-input" class="cursor-pointer bg-pink-100 hover:bg-pink-200 text-pink-700 font-bold text-xs px-3 py-1.5 rounded-xl border border-pink-200 transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-camera"></i>
+                        <span>Đổi ảnh Cô</span>
+                    </label>
+                    <input type="file" id="upload-avatar-input" accept="image/*" class="hidden" onchange="handleAvatarFileUpload(event)" />
+                    <button type="button" onclick="switchTab('admin')" class="bg-white hover:bg-pink-50 text-pink-600 font-bold text-xs px-3 py-1.5 rounded-xl border border-pink-200 transition flex items-center gap-1">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>Sửa thông tin</span>
+                    </button>
+                </div>
+
+                <!-- Tên Cô & Tên Lớp -->
+                <div class="mt-3 w-full pt-3 border-t border-pink-100">
+                    <h2 id="display-teacher-name" class="font-cute font-bold text-2xl text-pink-600 leading-snug">Cô Nguyễn Thị Hương</h2>
+                    <div class="mt-1.5 flex items-center justify-center gap-1.5 text-sm font-bold text-rose-500">
+                        <span>Tập thể:</span>
+                        <span id="display-class-name" class="bg-pink-100 px-3 py-0.5 rounded-full text-pink-700 border border-pink-200">Lớp 12A1 Yêu Thương 💕</span>
+                    </div>
+                    <p id="display-teacher-quote" class="mt-3 text-xs sm:text-sm italic text-pink-600 bg-rose-50/90 py-2.5 px-3.5 rounded-2xl border border-pink-100 leading-relaxed">
+                        "Dịu dàng, tâm lý nhưng mỗi lần cả lớp ồn là ánh mắt cô sắc như dao cau!"
+                    </p>
+                </div>
+
+                <!-- Thống kê nhanh của lớp -->
+                <div class="w-full mt-4 grid grid-cols-2 gap-2.5 text-left">
+                    <div class="bg-pink-50/90 p-3 rounded-2xl border border-pink-200 flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-lg shadow-sm">👩‍🎓</div>
+                        <div>
+                            <div id="stat-players-count" class="font-cute font-bold text-base text-pink-700 leading-none">0 bạn</div>
+                            <div class="text-[11px] text-pink-400 font-semibold mt-0.5">Đã tham gia</div>
+                        </div>
+                    </div>
+                    <div class="bg-pink-50/90 p-3 rounded-2xl border border-pink-200 flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-lg shadow-sm">💌</div>
+                        <div>
+                            <div id="stat-wishes-count" class="font-cute font-bold text-base text-pink-700 leading-none">0 thiệp</div>
+                            <div class="text-[11px] text-pink-400 font-semibold mt-0.5">Gửi tặng Cô</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thanh Trái Tim Độ Hiểu Ý Cô -->
+                <div class="w-full mt-3 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-3 border border-pink-200 flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-base">💖</span>
+                        <span class="text-xs font-bold text-pink-700">Độ hiểu ý Cô:</span>
+                    </div>
+                    <div class="flex items-center gap-1 flex-wrap justify-end" id="heart-score-bar">
+                        <!-- Render tim tự động -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- CỘT PHẢI (8 CỘT): CÁC MÀN HÌNH CHỨC NĂNG -->
+            <section class="lg:col-span-8 cute-card rounded-[2rem] p-5 sm:p-7 min-h-[520px] flex flex-col justify-between relative overflow-hidden">
+
+                <!-- ========================================================= -->
+                <!-- TAB 1: CHƠI QUIZ (DÀNH CHO HỌC SINH TRONG LỚP)            -->
+                <!-- ========================================================= -->
+                <div id="tab-content-play" class="flex-grow flex flex-col justify-between">
+
+                    <!-- MÀN HÌNH 1.1: NHẬP TÊN & CHỌN AVATAR TRƯỚC KHI THI -->
+                    <div id="screen-welcome" class="flex-grow flex flex-col items-center justify-center text-center py-2">
+                        <span class="text-xs font-bold uppercase tracking-wider bg-rose-100 text-rose-600 px-3.5 py-1 rounded-full mb-2 border border-rose-200">
+                            ✨ Cuộc Thi Cả Lớp Mừng Ngày 20/10 ✨
+                        </span>
+                        <h2 class="font-cute font-bold text-2xl sm:text-3xl text-pink-600 mb-2">
+                            Ai Hiểu Ý <span class="teacher-name-inline">Cô Nguyễn Thị Hương</span> Nhất?
+                        </h2>
+                        <p class="text-xs sm:text-sm text-pink-800/80 max-w-lg mb-5 leading-relaxed">
+                            Hãy nhập tên hoặc biệt danh của bạn trong lớp và chọn một linh vật may mắn. Hệ thống sẽ tính <b>Điểm số</b> và <b>Thời gian trả lời nhanh nhất</b> để xếp hạng Vinh danh toàn lớp nhé!
+                        </p>
+
+                        <!-- Khung đăng ký thông tin học sinh -->
+                        <div class="w-full max-w-md bg-gradient-to-b from-pink-50/90 to-rose-50/60 border-2 border-pink-200 rounded-3xl p-4 sm:p-5 text-left shadow-inner mb-5">
+                            <label class="block text-xs font-bold text-pink-700 mb-1.5">
+                                <i class="fa-solid fa-user-pen mr-1"></i> Tên của bạn / Biệt danh trong lớp:
+                            </label>
+                            <input type="text" id="student-name-input" maxlength="32" placeholder="VD: Minh Anh bàn cuối, Tuấn hay ngủ gật..." 
+                                   class="w-full px-4 py-2.5 rounded-2xl border-2 border-pink-200 focus:outline-none focus:border-pink-400 bg-white text-sm font-bold text-pink-900 placeholder-pink-300">
+
+                            <label class="block text-xs font-bold text-pink-700 mt-4 mb-2">
+                                <i class="fa-solid fa-wand-sparkles mr-1"></i> Chọn Avatar dễ thương của bạn:
+                            </label>
+                            <div id="avatar-picker-grid" class="grid grid-cols-5 gap-2">
+                                <!-- Các nút chọn Avatar render bằng JS -->
+                            </div>
+                        </div>
+
+                        <!-- Nút bắt đầu -->
+                        <div class="flex flex-wrap justify-center gap-3 w-full max-w-md">
+                            <button onclick="startQuiz()" class="btn-cute w-full sm:w-auto flex-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-base py-3.5 px-7 rounded-2xl flex items-center justify-center gap-2">
+                                <span>Bắt Đầu Thử Thách Hiểu Ý Cô!</span>
+                                <i class="fa-solid fa-bolt"></i>
+                            </button>
+                        </div>
+
+                        <div class="mt-5 flex flex-wrap items-center justify-center gap-4 text-xs font-bold text-pink-500">
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-circle-question text-pink-400"></i> <span id="welcome-total-q">5</span> câu hỏi vui</span>
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-stopwatch text-pink-400"></i> Đua tốc độ từng giây</span>
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-crown text-amber-400"></i> BXH thời gian thực</span>
+                        </div>
+                    </div>
+
+                    <!-- MÀN HÌNH 1.2: ĐANG LÀM BÀI THI TRẮC NGHIỆM -->
+                    <div id="screen-quiz" class="hidden flex-grow flex flex-col justify-between">
+                        <!-- Thanh thông tin: Người chơi + Câu hỏi + Đồng hồ bấm giờ -->
+                        <div>
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+                                <div class="flex items-center gap-2 bg-pink-50 px-3 py-1 rounded-full border border-pink-200">
+                                    <span id="playing-student-avatar" class="text-lg">🐰</span>
+                                    <span id="playing-student-name" class="text-xs font-bold text-pink-700">Học sinh</span>
+                                </div>
+
+                                <div class="flex items-center gap-2">
+                                    <span id="question-progress-text" class="bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full">Câu 1/5</span>
+                                    <span class="bg-rose-100 text-rose-600 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 border border-rose-200">
+                                        <i class="fa-solid fa-stopwatch animate-pulse"></i>
+                                        <span id="quiz-timer-display">0.0s</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="w-full h-3 bg-pink-100 rounded-full overflow-hidden p-0.5 border border-pink-200">
+                                <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-pink-400 to-rose-500 rounded-full transition-all duration-500" style="width: 20%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Khung câu hỏi & 4 đáp án -->
+                        <div class="my-4">
+                            <div class="bg-gradient-to-br from-pink-50 to-rose-50 border-2 border-pink-200 rounded-3xl p-4 sm:p-5 shadow-inner relative">
+                                <span id="question-emoji" class="text-3xl mb-1.5 inline-block">🌸</span>
+                                <h3 id="question-text" class="font-cute font-bold text-lg sm:text-xl text-pink-800 leading-snug">
+                                    Nội dung câu hỏi đang tải...
+                                </h3>
+                            </div>
+
+                            <!-- 4 lựa chọn -->
+                            <div id="options-container" class="grid grid-cols-1 gap-2.5 mt-3.5">
+                                <!-- Các nút đáp án sinh tự động -->
+                            </div>
+
+                            <!-- Hộp phản hồi -->
+                            <div id="feedback-box" class="hidden mt-3.5 p-3 rounded-2xl border-2 text-xs sm:text-sm font-bold flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span id="feedback-icon" class="text-xl">🎉</span>
+                                    <span id="feedback-message">Chính xác!</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nút điều hướng dưới cùng -->
+                        <div class="flex justify-between items-center pt-2 border-t border-pink-100">
+                            <button onclick="cancelQuizToWelcome()" class="text-xs font-bold text-pink-400 hover:text-pink-600 flex items-center gap-1 py-2 px-3 rounded-xl hover:bg-pink-50 transition">
+                                <i class="fa-solid fa-xmark"></i>
+                                <span>Thoát lượt chơi</span>
+                            </button>
+                            <button id="next-question-btn" onclick="nextQuestion()" class="hidden btn-cute bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-sm px-6 py-2.5 rounded-2xl flex items-center gap-2">
+                                <span>Câu tiếp theo</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- MÀN HÌNH 1.3: HOÀN THÀNH BÀI THI & GỬI LỜI CHÚC LÊN BẢNG XẾP HẠNG -->
+                    <div id="screen-result" class="hidden flex-grow flex flex-col items-center justify-between text-center py-2">
+                        <div class="w-full">
+                            <div class="inline-flex items-center gap-1.5 bg-pink-100 text-pink-700 font-bold text-xs px-3.5 py-1 rounded-full mb-2 border border-pink-200">
+                                <span>🎉 Hoàn thành thử thách 20/10!</span>
+                            </div>
+
+                            <!-- Thẻ danh hiệu & Điểm số của học sinh -->
+                            <div class="bg-gradient-to-br from-rose-50 via-white to-pink-50 border-2 border-pink-200 rounded-3xl p-4 sm:p-5 shadow-sm max-w-lg mx-auto mb-4">
+                                <div class="flex items-center justify-center gap-2 mb-1">
+                                    <span id="result-student-avatar" class="text-3xl">🐰</span>
+                                    <span id="result-student-name" class="font-cute font-bold text-xl text-pink-700">Bạn Học Sinh</span>
+                                </div>
+
+                                <div id="result-title-badge" class="inline-block bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-xs sm:text-sm px-4 py-1 rounded-full shadow-sm my-1.5">
+                                    👑 Học Trò Cưng Của Cô
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-pink-100">
+                                    <div class="bg-pink-50/80 p-2.5 rounded-2xl">
+                                        <div class="text-[11px] font-bold text-pink-400 uppercase">Điểm hiểu ý Cô</div>
+                                        <div id="result-score-text" class="font-cute font-bold text-xl sm:text-2xl text-pink-600">5 / 5 câu</div>
+                                    </div>
+                                    <div class="bg-pink-50/80 p-2.5 rounded-2xl">
+                                        <div class="text-[11px] font-bold text-pink-400 uppercase">Thời gian hoàn thành</div>
+                                        <div id="result-time-text" class="font-cute font-bold text-xl sm:text-2xl text-rose-500">12.4 giây</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ô nhập lời chúc 20/10 gửi tặng Cô -->
+                            <div id="wish-submission-form" class="max-w-lg mx-auto text-left bg-pink-50/70 border-2 border-pink-200 rounded-3xl p-4 sm:p-5">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <label class="text-xs sm:text-sm font-bold text-pink-700 flex items-center gap-1.5">
+                                        <span>💌</span>
+                                        <span>Gửi lời chúc 20/10 ngọt ngào tới Cô (Sẽ hiện lên Tường Lưu Bút):</span>
+                                    </label>
+                                </div>
+                                <textarea id="student-wish-input" rows="3" maxlength="300" placeholder="Chúc cô 20/10 luôn xinh đẹp, trẻ trung và bớt gọi em lên bảng trả bài ạ hihi..." 
+                                          class="w-full p-3 rounded-2xl border-2 border-pink-200 focus:outline-none focus:border-pink-400 bg-white text-xs sm:text-sm font-medium text-pink-900"></textarea>
+                                
+                                <!-- Gợi ý lời chúc nhanh -->
+                                <div class="flex flex-wrap gap-1.5 mt-2 mb-3">
+                                    <button type="button" onclick="fillQuickWish(0)" class="text-[11px] bg-white hover:bg-pink-100 text-pink-600 px-2.5 py-1 rounded-xl border border-pink-200 transition">🌸 Chúc Cô mãi trẻ đẹp</button>
+                                    <button type="button" onclick="fillQuickWish(1)" class="text-[11px] bg-white hover:bg-pink-100 text-pink-600 px-2.5 py-1 rounded-xl border border-pink-200 transition">💖 Người mẹ thứ 2 tuyệt vời</button>
+                                    <button type="button" onclick="fillQuickWish(2)" class="text-[11px] bg-white hover:bg-pink-100 text-pink-600 px-2.5 py-1 rounded-xl border border-pink-200 transition">🥰 Hứa ngoan không làm Cô buồn</button>
+                                </div>
+
+                                <button id="submit-score-btn" onclick="submitResultToCloud()" class="btn-cute w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-sm sm:text-base py-3.5 px-6 rounded-2xl flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    <span>Ghi Tên Lên Bảng Xếp Hạng & Gửi Thiệp Cho Cô!</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ========================================================= -->
+                <!-- TAB 2: BẢNG XẾP HẠNG LỚP & VƯỜN HOA LỜI CHÚC 20/10        -->
+                <!-- ========================================================= -->
+                <div id="tab-content-leaderboard" class="hidden flex-grow flex flex-col justify-between space-y-6">
+                    
+                    <!-- Phần 1: Bục Vinh Danh Top 1 - Top 2 - Top 3 -->
+                    <div>
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                            <div>
+                                <h2 class="font-cute font-bold text-xl sm:text-2xl text-pink-600 flex items-center gap-2">
+                                    <span>🏆</span>
+                                    <span>Bảng Phong Thần: Ai Hiểu Cô Nhất Lớp?</span>
+                                </h2>
+                                <p class="text-xs text-pink-400 font-semibold">Cập nhật tự động theo thời gian thực • Ưu tiên Điểm cao & Thời gian nhanh nhất</p>
+                            </div>
+                            <button onclick="triggerHeartShower()" class="bg-pink-100 hover:bg-pink-200 text-pink-600 text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 border border-pink-200 transition">
+                                <span>🎉</span>
+                                <span>Bắn pháo hoa chúc mừng</span>
+                            </button>
+                        </div>
+
+                        <!-- Top 3 Podium -->
+                        <div id="podium-container" class="grid grid-cols-3 gap-2 sm:gap-4 items-end pt-4 pb-2 px-1">
+                            <!-- Sinh tự động bằng JS -->
+                        </div>
+
+                        <!-- Danh sách toàn bộ học sinh xếp hạng -->
+                        <div class="mt-4 bg-pink-50/60 border-2 border-pink-200 rounded-3xl overflow-hidden">
+                            <div class="bg-pink-100/80 px-4 py-2.5 text-xs font-bold text-pink-700 grid grid-cols-12 gap-2">
+                                <div class="col-span-2 sm:col-span-1 text-center">Hạng</div>
+                                <div class="col-span-6 sm:col-span-7">Học sinh & Danh hiệu</div>
+                                <div class="col-span-2 text-center">Điểm</div>
+                                <div class="col-span-2 text-right">Thời gian</div>
+                            </div>
+                            <div id="leaderboard-list-body" class="divide-y divide-pink-100 max-h-60 overflow-y-auto bg-white/80">
+                                <!-- Sinh tự động bằng JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phần 2: Vườn Hoa Lời Chúc 20/10 & Thiệp Chung Của Lớp -->
+                    <div class="pt-4 border-t-2 border-dashed border-pink-200">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <div>
+                                <h3 class="font-cute font-bold text-lg sm:text-xl text-pink-600 flex items-center gap-2">
+                                    <span>🌷</span>
+                                    <span>Vườn Hoa Lời Chúc 20/10 Gửi Tặng Cô</span>
+                                </h3>
+                                <p class="text-xs text-pink-400 font-semibold">Những tấm thiệp nhỏ xinh từ các thành viên trong lớp gửi tới Cô</p>
+                            </div>
+                            <button onclick="printLuuButToPDF()" class="no-print bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-sm transition">
+                                <i class="fa-solid fa-file-pdf"></i>
+                                <span>In / Lưu Sổ Lưu Bút Tặng Cô</span>
+                            </button>
+                        </div>
+
+                        <!-- Thiệp chúc mừng chính thức của tập thể lớp -->
+                        <div class="bg-gradient-to-r from-rose-50 via-white to-pink-50 border-2 border-pink-300 rounded-3xl p-4 mb-4 shadow-sm relative">
+                            <div class="flex items-center gap-1.5 text-xs font-bold text-rose-500 mb-1">
+                                <span>💐</span>
+                                <span>Thiệp Chúc Mừng Chung Của <span class="class-name-inline">Tập thể lớp 12A1 Yêu Thương 💕</span></span>
+                            </div>
+                            <p id="general-class-wish-display" class="text-xs sm:text-sm text-pink-900 leading-relaxed whitespace-pre-line font-medium"></p>
+                        </div>
+
+                        <!-- Lưới các tấm thiệp nhỏ của từng học sinh -->
+                        <div id="wishes-wall-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-80 overflow-y-auto pr-1">
+                            <!-- Sinh tự động bằng JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================================= -->
+                <!-- TAB 3: CÁN BỘ LỚP (CHỈNH SỬA ĐỀ THI & THÔNG TIN CÔ)       -->
+                <!-- ========================================================= -->
+                <div id="tab-content-admin" class="hidden flex-grow flex flex-col justify-between space-y-5">
+                    <div>
+                        <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-pink-100">
+                            <div>
+                                <h2 class="font-cute font-bold text-xl sm:text-2xl text-pink-600 flex items-center gap-2">
+                                    <span>🛠️</span>
+                                    <span>Góc Cán Bộ Lớp: Tùy Chỉnh Đề & Ảnh Cô</span>
+                                </h2>
+                                <p class="text-xs text-pink-400 font-semibold">Khi bấm "Lưu & Đồng Bộ Cho Cả Lớp", mọi máy trong lớp sẽ tự động cập nhật ngay lập tức!</p>
+                            </div>
+                            <button onclick="saveClassConfigToCloud()" id="save-config-cloud-btn" class="btn-cute bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-2xl flex items-center gap-1.5">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>Lưu & Đồng Bộ Cho Cả Lớp</span>
+                            </button>
+                        </div>
+
+                        <!-- Khung chỉnh thông tin Cô & Lớp -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 bg-pink-50/70 p-4 rounded-3xl border border-pink-200">
+                            <div>
+                                <label class="block text-xs font-bold text-pink-700 mb-1">Tên Cô giáo chủ nhiệm:</label>
+                                <input type="text" id="admin-teacher-name" class="w-full px-3.5 py-2 rounded-xl border border-pink-200 text-xs sm:text-sm font-bold text-pink-900 bg-white focus:outline-none focus:border-pink-400" />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-pink-700 mb-1">Tên Tập thể lớp:</label>
+                                <input type="text" id="admin-class-name" class="w-full px-3.5 py-2 rounded-xl border border-pink-200 text-xs sm:text-sm font-bold text-pink-900 bg-white focus:outline-none focus:border-pink-400" />
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-bold text-pink-700 mb-1">Câu nói / Miêu tả đáng yêu về Cô (dưới khung ảnh):</label>
+                                <input type="text" id="admin-teacher-quote" class="w-full px-3.5 py-2 rounded-xl border border-pink-200 text-xs sm:text-sm font-medium text-pink-900 bg-white focus:outline-none focus:border-pink-400" />
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-bold text-pink-700 mb-1">Link ảnh Cô giáo (Hoặc bấm nút "Đổi ảnh Cô" bên trái để tải ảnh từ máy):</label>
+                                <input type="text" id="admin-avatar-url" placeholder="https://..." class="w-full px-3.5 py-2 rounded-xl border border-pink-200 text-xs sm:text-sm font-medium text-pink-900 bg-white focus:outline-none focus:border-pink-400" />
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-bold text-pink-700 mb-1">Lời chúc 20/10 chung của cả tập thể lớp:</label>
+                                <textarea id="admin-card-message" rows="2" class="w-full p-3 rounded-xl border border-pink-200 text-xs sm:text-sm font-medium text-pink-900 bg-white focus:outline-none focus:border-pink-400"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Danh sách câu hỏi trắc nghiệm -->
+                        <div class="mt-5">
+                            <div class="flex items-center justify-between mb-2.5">
+                                <h3 class="font-cute font-bold text-base sm:text-lg text-pink-700 flex items-center gap-1.5">
+                                    <span>📝</span>
+                                    <span>Bộ Câu Hỏi Đố Vui Về Cô</span>
+                                </h3>
+                                <button type="button" onclick="addQuestionInAdmin()" class="bg-pink-100 hover:bg-pink-200 text-pink-700 font-bold text-xs px-3.5 py-1.5 rounded-xl border border-pink-200 transition flex items-center gap-1">
+                                    <i class="fa-solid fa-plus"></i>
+                                    <span>Thêm câu hỏi mới</span>
+                                </button>
+                            </div>
+                            <div id="admin-questions-list" class="space-y-3 max-h-80 overflow-y-auto pr-1">
+                                <!-- Render danh sách câu hỏi bằng JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- HỘP THÔNG BÁO NHỎ GỌN (TOAST) -->
+    <div id="cute-toast" class="fixed bottom-5 right-5 z-50 hidden bg-pink-600 text-white text-xs sm:text-sm font-bold px-4 py-3 rounded-2xl shadow-lg flex items-center gap-2 border-2 border-white">
+        <span>✨</span>
+        <span id="cute-toast-text">Thông báo!</span>
+    </div>
+
+    <!-- Chân trang -->
+    <footer class="relative z-10 text-center text-xs text-pink-400 font-semibold py-2">
+        Thiết kế với thật nhiều 💖 dành tặng Cô giáo chủ nhiệm nhân ngày Phụ nữ Việt Nam 20/10
+    </footer>
+
+    <!-- ========================================================= -->
+    <!-- KỊCH BẢN FIREBASE & LOGIC ỨNG DỤNG                        -->
+    <!-- ========================================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // =========================================================================
+        // 1. DỮ LIỆU MẶC ĐỊNH CỦA LỚP
+        // =========================================================================
+        const DEFAULT_CLASS_DATA = {
+            avatarUrl: "https://placehold.co/400x400/FFE4E6/DB2777?text=Cô+Giáo+20/10+💕",
+            teacherName: "Cô Nguyễn Thị Hương",
+            className: "12A1 Yêu Thương 💕",
+            teacherQuote: "\"Dịu dàng, tâm lý nhưng mỗi lần cả lớp ồn là ánh mắt cô sắc như dao cau!\"",
+            cardMessage: "Nhân ngày Phụ nữ Việt Nam 20/10, tập thể lớp chúng em xin gửi tới Cô ngàn lời chúc tốt đẹp và ngọt ngào nhất! Cảm ơn Cô vì đã luôn kiên nhẫn, bao dung và yêu thương chúng em như những đứa con của mình. Chúc Cô mãi luôn xinh đẹp, rạng rỡ và tràn đầy hạnh phúc!",
+            questions: [
+                {
+                    emoji: "🤫",
+                    question: "Câu nói 'thương hiệu' quen thuộc nhất của Cô mỗi khi cả lớp đang nói chuyện rôm rả là gì?",
+                    options: [
+                        "\"Các anh các chị có định cho tôi dạy nữa không đây?\"",
+                        "\"Im lặng ngay! Tôi nghe thấy tiếng lớp mình từ đầu hành lang rồi đấy!\"",
+                        "\"Hôm nay lớp mình ngoan thế nhỉ, thưởng cả lớp nghỉ sớm!\"",
+                        "\"Ai vừa nói chuyện tự giác đứng lên trước khi tôi gọi tên!\""
+                    ],
+                    correct: 1
+                },
+                {
+                    emoji: "📚",
+                    question: "Bộ môn mà Cô giáo chủ nhiệm chúng mình giảng dạy đỉnh cao nhất là môn gì?",
+                    options: [
+                        "Ngữ Văn dạt dào cảm xúc",
+                        "Toán học logic siêu tốc",
+                        "Ngoại ngữ bắn như gió",
+                        "Khoa học Tự nhiên / Xã hội cực cuốn"
+                    ],
+                    correct: 0
+                },
+                {
+                    emoji: "🧋",
+                    question: "Điều gì dễ làm Cô giáo chủ nhiệm chúng mình vui vẻ và tự hào nhất trong giờ sinh hoạt cuối tuần?",
+                    options: [
+                        "Trà sữa trân châu đường đen ít ngọt",
+                        "Không ai đi học muộn hay quên đeo thẻ",
+                        "Sổ đầu bài toàn điểm Tốt và lớp xếp hạng Nhất tuần",
+                        "Cả 3 điều trên cộng lại!"
+                    ],
+                    correct: 3
+                },
+                {
+                    emoji: "👀",
+                    question: "Phản ứng 'đặc trưng' của Cô khi bắt gặp một bạn đang lén ăn quà vặt hoặc ngáp ngủ trong giờ là gì?",
+                    options: [
+                        "Đi nhẹ nhàng xuống tận bàn rồi vỗ vai bất ngờ",
+                        "Dừng giảng bài, nhìn chằm chằm bằng ánh mắt 'sắc lẹm' cho tới khi tự giác cất đi",
+                        "Mời lên bảng giải bài tập khó ngay lập tức",
+                        "Cười tủm tỉm rồi trêu một câu làm cả lớp cười vang"
+                    ],
+                    correct: 1
+                },
+                {
+                    emoji: "💖",
+                    question: "Điều gì ở Cô giáo chủ nhiệm khiến cả lớp mình luôn tự hào và yêu quý nhất?",
+                    options: [
+                        "Ngoài lạnh trong nóng, luôn âm thầm bênh vực và che chở cho lớp",
+                        "Giảng bài siêu dễ hiểu lại còn hay kể chuyện vui",
+                        "Tâm lý hết nước chấm, luôn lắng nghe tâm sự của học trò",
+                        "Tất cả những điều trên cộng lại x1000 lần yêu thương!"
+                    ],
+                    correct: 3
+                }
+            ]
+        };
+
+        const AVATAR_LIST = ['🐰', '🐻', '🐱', '🐶', '🐼', '🦊', '🐹', '🌻', '🍓', '🦄'];
+        const QUICK_WISHES = [
+            "Nhân ngày 20/10, em chúc Cô luôn xinh đẹp rạng ngời, tràn đầy năng lượng và mãi là cô giáo chủ nhiệm tuyệt vời nhất của chúng em ạ! 🌸💖",
+            "Chúc người mẹ thứ hai của lớp mình một ngày 20/10 ngập tràn hoa tươi, niềm vui và tiếng cười! Cảm ơn Cô đã luôn bao dung cho sự nghịch ngợm của tụi em ạ! 💐🥰",
+            "20/10 chúng em chúc Cô sức khỏe dồi dào, trẻ mãi không già! Chúng em hứa sẽ chăm ngoan, học giỏi để Cô luôn tự hào về lớp mình ạ! 💕✨"
+        ];
+
+        // Biến trạng thái toàn cục
+        let appData = JSON.parse(JSON.stringify(DEFAULT_CLASS_DATA));
+        let leaderboardEntries = [];
+        let selectedStudentAvatar = AVATAR_LIST[0];
+        let currentStudentName = "";
+        let currentQuestionIndex = 0;
+        let currentScore = 0;
+        let quizStartTime = 0;
+        let quizTimerInterval = null;
+        let elapsedSeconds = 0;
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        // Biến Firebase
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-20-10-class-quiz';
+
+        // ==========================================
+        // 2. KẾT NỐI FIREBASE ĐỒNG BỘ ĐỀ THI & BẢNG XẾP HẠNG
+        // ==========================================
+        async function initFirebaseSync() {
+            try {
+                if (typeof __firebase_config === 'undefined' || !__firebase_config) {
+                    updateCloudStatus(false, "Chế độ Offline");
+                    return;
+                }
+
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                // RULE 3: Auth Before Queries
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    currentUser = user;
+                    if (user) {
+                        updateCloudStatus(true, "Đã đồng bộ Lớp học");
+                        setupRealtimeListeners();
+                    }
+                });
+            } catch (err) {
+                console.error("Lỗi khởi tạo Firebase:", err);
+                updateCloudStatus(false, "Chế độ Offline");
+            }
+        }
+
+        function updateCloudStatus(isOnline, text) {
+            const badge = document.getElementById('cloud-status-badge');
+            if (!badge) return;
+            if (isOnline) {
+                badge.className = "inline-flex items-center gap-1.5 text-[11px] font-bold bg-emerald-100 text-emerald-700 px-2.5 py-0.5 rounded-full border border-emerald-200";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span><span>${text}</span>`;
+            } else {
+                badge.className = "inline-flex items-center gap-1.5 text-[11px] font-bold bg-rose-100 text-rose-700 px-2.5 py-0.5 rounded-full border border-rose-200";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500"></span><span>${text}</span>`;
+            }
+        }
+
+        function setupRealtimeListeners() {
+            if (!currentUser || !db) return;
+
+            // 1. Lắng nghe cấu hình đề thi & thông tin Cô giáo từ Cán bộ lớp
+            const configDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'classConfig', 'main');
+            onSnapshot(configDocRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    appData = {
+                        teacherName: data.teacherName || DEFAULT_CLASS_DATA.teacherName,
+                        className: data.className || DEFAULT_CLASS_DATA.className,
+                        teacherQuote: data.teacherQuote || DEFAULT_CLASS_DATA.teacherQuote,
+                        avatarUrl: data.avatarUrl || DEFAULT_CLASS_DATA.avatarUrl,
+                        cardMessage: data.cardMessage || DEFAULT_CLASS_DATA.cardMessage,
+                        questions: data.questionsJson ? JSON.parse(data.questionsJson) : DEFAULT_CLASS_DATA.questions
+                    };
+                    renderAllTeacherInfo();
+                    renderHeartScoreBar();
+                    populateAdminForm();
+                }
+            }, (error) => {
+                console.error("Lỗi lắng nghe cấu hình lớp:", error);
+            });
+
+            // 2. Lắng nghe Bảng xếp hạng & Lời chúc từ Firebase
+            const submissionsColRef = collection(db, 'artifacts', appId, 'public', 'data', 'submissions');
+            onSnapshot(submissionsColRef, (snapshot) => {
+                const list = [];
+                snapshot.forEach((docSnap) => {
+                    list.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                // Sắp xếp: Điểm cao nhất -> Thời gian nhanh nhất
+                list.sort((a, b) => {
+                    if ((b.score || 0) !== (a.score || 0)) {
+                        return (b.score || 0) - (a.score || 0);
+                    }
+                    return (a.timeTaken || 9999) - (b.timeTaken || 9999);
+                });
+
+                leaderboardEntries = list;
+                renderLeaderboardAndWishes();
+            }, (error) => {
+                console.error("Lỗi lắng nghe Bảng xếp hạng:", error);
+            });
+        }
+
+        // ==========================================
+        // 3. ÂM THANH WEB AUDIO API VUI NHỘN
+        // ==========================================
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) audioCtx = new AudioContext();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+
+                if (type === 'correct') {
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+                        gain.gain.setValueAtTime(0.14, now + idx * 0.07);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.28);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now + idx * 0.07);
+                        osc.stop(now + idx * 0.07 + 0.3);
+                    });
+                } else if (type === 'wrong') {
+                    const notes = [330, 277.18];
+                    notes.forEach((freq, idx) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.14);
+                        gain.gain.setValueAtTime(0.12, now + idx * 0.14);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.14 + 0.25);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now + idx * 0.14);
+                        osc.stop(now + idx * 0.14 + 0.26);
+                    });
+                } else if (type === 'fanfare') {
+                    const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+                    notes.forEach((freq, idx) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.09);
+                        gain.gain.setValueAtTime(0.15, now + idx * 0.09);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.09 + 0.45);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now + idx * 0.09);
+                        osc.stop(now + idx * 0.09 + 0.48);
+                    });
+                }
+            } catch (e) {
+                console.warn("Audio error:", e);
+            }
+        }
+
+        window.toggleSound = function() {
+            soundEnabled = !soundEnabled;
+            document.querySelectorAll('.sound-icon').forEach(icon => {
+                icon.className = soundEnabled ? 'sound-icon fa-solid fa-volume-high' : 'sound-icon fa-solid fa-volume-xmark';
+            });
+            showToast(soundEnabled ? "Đã bật hiệu ứng âm thanh 🎵" : "Đã tắt âm thanh 🔇");
+        };
+
+        // ==========================================
+        // 4. HIỂN THỊ THÔNG TIN & CHUYỂN TAB
+        // ==========================================
+        window.switchTab = function(tabName) {
+            const tabs = ['play', 'leaderboard', 'admin'];
+            tabs.forEach(t => {
+                const content = document.getElementById(`tab-content-${t}`);
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (!content || !btn) return;
+                if (t === tabName) {
+                    content.classList.remove('hidden');
+                    btn.className = "flex-1 md:flex-initial px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-1.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-sm";
+                } else {
+                    content.classList.add('hidden');
+                    btn.className = "flex-1 md:flex-initial px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-1.5 text-pink-700 hover:bg-pink-100";
+                }
+            });
+
+            if (tabName === 'admin') {
+                populateAdminForm();
+            }
+        };
+
+        window.printLuuButToPDF = function() {
+            window.switchTab('leaderboard');
+            setTimeout(() => {
+                window.print();
+            }, 250);
+        };
+
+        function renderAllTeacherInfo() {
+            document.getElementById('display-teacher-name').innerText = appData.teacherName;
+            document.getElementById('display-class-name').innerText = appData.className;
+            document.getElementById('display-teacher-quote').innerText = appData.teacherQuote;
+            document.getElementById('teacher-avatar').src = appData.avatarUrl;
+            document.getElementById('welcome-total-q').innerText = appData.questions.length;
+            document.getElementById('general-class-wish-display').innerText = appData.cardMessage;
+
+            document.querySelectorAll('.teacher-name-inline').forEach(el => {
+                el.innerText = appData.teacherName;
+            });
+            document.querySelectorAll('.class-name-inline').forEach(el => {
+                el.innerText = appData.className;
+            });
+        }
+
+        function renderAvatarPicker() {
+            const grid = document.getElementById('avatar-picker-grid');
+            grid.innerHTML = '';
+            AVATAR_LIST.forEach(avt => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                const isSelected = avt === selectedStudentAvatar;
+                btn.className = `h-11 rounded-2xl text-xl flex items-center justify-center transition transform ${
+                    isSelected 
+                    ? 'bg-pink-500 text-white scale-105 shadow-md ring-2 ring-pink-300' 
+                    : 'bg-white hover:bg-pink-100 border border-pink-200'
+                }`;
+                btn.innerText = avt;
+                btn.onclick = () => {
+                    selectedStudentAvatar = avt;
+                    renderAvatarPicker();
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        function renderHeartScoreBar() {
+            const bar = document.getElementById('heart-score-bar');
+            bar.innerHTML = '';
+            const total = appData.questions.length;
+            for (let i = 0; i < total; i++) {
+                const span = document.createElement('span');
+                span.className = 'text-base transition-transform duration-300';
+                span.innerText = i < currentScore ? '💖' : '🤍';
+                bar.appendChild(span);
+            }
+        }
+
+        // ==========================================
+        // 6.5. LOGIC DÀNH CHO CÁN BỘ LỚP (SỬA ĐỀ & ĐỔI ẢNH CÔ)
+        // ==========================================
+        function populateAdminForm() {
+            const nameInput = document.getElementById('admin-teacher-name');
+            if (!nameInput) return;
+            nameInput.value = appData.teacherName || '';
+            document.getElementById('admin-class-name').value = appData.className || '';
+            document.getElementById('admin-teacher-quote').value = appData.teacherQuote || '';
+            document.getElementById('admin-avatar-url').value = appData.avatarUrl || '';
+            document.getElementById('admin-card-message').value = appData.cardMessage || '';
+            renderAdminQuestionsList();
+        }
+
+        function renderAdminQuestionsList() {
+            const container = document.getElementById('admin-questions-list');
+            if (!container) return;
+            container.innerHTML = appData.questions.map((q, qIdx) => `
+                <div class="bg-white p-4 rounded-2xl border-2 border-pink-200 shadow-sm space-y-2.5">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2 flex-grow">
+                            <input type="text" value="${escapeHtml(q.emoji || '🌸')}" onchange="updateAdminQuestionField(${qIdx}, 'emoji', this.value)" class="w-11 text-center py-1.5 rounded-xl border border-pink-200 text-base" title="Icon câu hỏi" />
+                            <input type="text" value="${escapeHtml(q.question)}" onchange="updateAdminQuestionField(${qIdx}, 'question', this.value)" placeholder="Nhập nội dung câu hỏi..." class="flex-grow px-3 py-1.5 rounded-xl border border-pink-200 text-xs sm:text-sm font-bold text-pink-900" />
+                        </div>
+                        <button type="button" onclick="removeQuestionInAdmin(${qIdx})" class="text-rose-500 hover:bg-rose-50 w-8 h-8 rounded-xl flex items-center justify-center transition" title="Xóa câu này">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        ${q.options.map((opt, oIdx) => `
+                            <div class="flex items-center gap-1.5">
+                                <input type="radio" name="correct_q_${qIdx}" ${q.correct === oIdx ? 'checked' : ''} onchange="updateAdminQuestionField(${qIdx}, 'correct', ${oIdx})" class="accent-pink-500 cursor-pointer" title="Chọn làm đáp án đúng" />
+                                <input type="text" value="${escapeHtml(opt)}" onchange="updateAdminQuestionOption(${qIdx}, ${oIdx}, this.value)" class="w-full px-2.5 py-1.5 rounded-xl border border-pink-100 text-xs font-medium text-pink-800 bg-pink-50/40" />
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.updateAdminQuestionField = function(qIdx, field, val) {
+            if (!appData.questions[qIdx]) return;
+            appData.questions[qIdx][field] = val;
+        };
+
+        window.updateAdminQuestionOption = function(qIdx, oIdx, val) {
+            if (!appData.questions[qIdx]) return;
+            appData.questions[qIdx].options[oIdx] = val;
+        };
+
+        window.addQuestionInAdmin = function() {
+            appData.questions.push({
+                emoji: "🌷",
+                question: "Câu hỏi mới về Cô giáo chủ nhiệm?",
+                options: ["Đáp án A", "Đáp án B", "Đáp án C", "Đáp án D"],
+                correct: 0
+            });
+            renderAdminQuestionsList();
+            showToast("Đã thêm 1 câu hỏi mới! Nhớ bấm Lưu & Đồng Bộ nhé 🌸");
+        };
+
+        window.removeQuestionInAdmin = function(qIdx) {
+            if (appData.questions.length <= 1) {
+                showToast("Cần giữ lại ít nhất 1 câu hỏi cho bài thi nhé!");
+                return;
+            }
+            appData.questions.splice(qIdx, 1);
+            renderAdminQuestionsList();
+        };
+
+        // Tải ảnh Cô từ điện thoại/máy tính và nén nhẹ bằng HTML5 Canvas để đồng bộ lên Cloud
+        window.handleAvatarFileUpload = function(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const size = 320;
+                    canvas.width = size;
+                    canvas.height = size;
+                    const ctx = canvas.getContext('2d');
+
+                    const minSide = Math.min(img.width, img.height);
+                    const sx = (img.width - minSide) / 2;
+                    const sy = (img.height - minSide) / 2;
+                    ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+                    appData.avatarUrl = compressedDataUrl;
+                    renderAllTeacherInfo();
+                    populateAdminForm();
+                    saveClassConfigToCloud();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.saveClassConfigToCloud = async function() {
+            const nameInput = document.getElementById('admin-teacher-name');
+            if (nameInput) {
+                appData.teacherName = nameInput.value.trim() || DEFAULT_CLASS_DATA.teacherName;
+                appData.className = document.getElementById('admin-class-name').value.trim() || DEFAULT_CLASS_DATA.className;
+                appData.teacherQuote = document.getElementById('admin-teacher-quote').value.trim() || DEFAULT_CLASS_DATA.teacherQuote;
+                appData.avatarUrl = document.getElementById('admin-avatar-url').value.trim() || appData.avatarUrl;
+                appData.cardMessage = document.getElementById('admin-card-message').value.trim() || DEFAULT_CLASS_DATA.cardMessage;
+            }
+
+            renderAllTeacherInfo();
+            renderHeartScoreBar();
+
+            const saveBtn = document.getElementById('save-config-cloud-btn');
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Đang đồng bộ...</span>`;
+            }
+
+            try {
+                if (currentUser && db) {
+                    const configDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'classConfig', 'main');
+                    await setDoc(configDocRef, {
+                        teacherName: appData.teacherName,
+                        className: appData.className,
+                        teacherQuote: appData.teacherQuote,
+                        avatarUrl: appData.avatarUrl,
+                        cardMessage: appData.cardMessage,
+                        questionsJson: JSON.stringify(appData.questions),
+                        updatedAt: Date.now()
+                    });
+                    showToast("Đã lưu & đồng bộ đề thi, ảnh Cô cho toàn bộ lớp! 🎉");
+                } else {
+                    showToast("Đã cập nhật trên máy hiện tại! 🌸");
+                }
+            } catch (err) {
+                console.error("Lỗi lưu cấu hình:", err);
+                showToast("Đã lưu tạm trên trình duyệt!");
+            } finally {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> <span>Lưu & Đồng Bộ Cho Cả Lớp</span>`;
+                }
+            }
+        };
+
+        // ==========================================
+        // 7. HIỆU ỨNG PHÁO HOA & CÁNH HOA RƠI
+        // ==========================================
+        function fireSmallConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 50,
+                    spread: 65,
+                    origin: { y: 0.65 },
+                    colors: ['#FF69B4', '#FFB6C1', '#FB7185', '#F472B6', '#FDE047']
+                });
+            }
+        }
+
+        window.triggerHeartShower = function() {
+            if (typeof confetti === 'function') {
+                const duration = 2.2 * 1000;
+                const end = Date.now() + duration;
+
+                (function frame() {
+                    confetti({
+                        particleCount: 5,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 },
+                        colors: ['#FF69B4', '#FFB6C1', '#F43F5E', '#FFF0F5']
+                    });
+                    confetti({
+                        particleCount: 5,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 },
+                        colors: ['#FF69B4', '#FFB6C1', '#F43F5E', '#FFF0F5']
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                }());
+            }
+
+            for (let i = 0; i < 15; i++) {
+                setTimeout(createFallingElement, i * 120);
+            }
+        };
+
+        function createFallingElement() {
+            const container = document.getElementById('petals-container');
+            if (!container) return;
+
+            const item = document.createElement('div');
+            item.className = 'falling-item';
+            const icons = ['🌸', '💖', '🌷', '💕', '🌺', '✨'];
+            item.innerText = icons[Math.floor(Math.random() * icons.length)];
+
+            const leftPos = Math.random() * 100;
+            const size = 14 + Math.random() * 15;
+            const duration = 5.5 + Math.random() * 5.5;
+
+            item.style.left = `${leftPos}vw`;
+            item.style.fontSize = `${size}px`;
+            item.style.animationDuration = `${duration}s`;
+
+            container.appendChild(item);
+            setTimeout(() => item.remove(), duration * 1000);
+        }
+
+        function startFallingPetals() {
+            for (let i = 0; i < 6; i++) {
+                setTimeout(createFallingElement, i * 450);
+            }
+            setInterval(createFallingElement, 1100);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('cute-toast');
+            document.getElementById('cute-toast-text').innerText = message;
+            toast.classList.remove('hidden');
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3200);
+        }
+
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, "&amp;")
+                .replace(/"/g, "&quot;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+        }
+
+        // Khởi chạy ứng dụng khi tải trang
+        window.addEventListener('DOMContentLoaded', () => {
+            renderAvatarPicker();
+            renderAllTeacherInfo();
+            renderHeartScoreBar();
+            renderLeaderboardAndWishes();
+            populateAdminForm();
+            startFallingPetals();
+            initFirebaseSync();
+        });
+    </script>
+</body>
+</html>
